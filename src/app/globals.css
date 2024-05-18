@@ -26,6 +26,11 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.yarl__thumbnails_bottom .yarl__thumbnails_vignette,
+.yarl__thumbnails_top .yarl__thumbnails_vignette {
+  background: none !important;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
