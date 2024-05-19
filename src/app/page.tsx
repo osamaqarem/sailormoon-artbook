@@ -31,7 +31,7 @@ export default async function Home() {
             key={bookName}
             className="hover:scale-105 cursor-default transform-gpu transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl rounded-md overflow-hidden"
           >
-            <div className="h-[450px] w-[800px]">
+            <div className="sm:h-[450px] sm:w-[800px] h-[250px] w-[500px]">
               <Image src={coverImage} alt={bookName} quality={100} fill />
             </div>
           </Link>

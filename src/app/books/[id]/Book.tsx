@@ -55,7 +55,6 @@ export const Book = ({ fileSources }: { fileSources: Array<string> }) => {
           background: colors?.LightMuted,
           transition: "background-color 1s",
         },
-
         thumbnailsContainer: {
           position: "absolute",
           bottom: 0,
