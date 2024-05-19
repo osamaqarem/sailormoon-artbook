@@ -12,3 +12,14 @@ export default async function Page({ params }: { params: { id: string } }) {
     </main>
   )
 }
+
+export async function generateStaticParams() {
+  const folders = (await readdir("public/sailor-moon")).filter((f) =>
+    f.startsWith("book")
+  )
+  return Promise.all(
+    folders.map(async (folder) => ({
+      id: folder,
+    }))
+  )
+}
