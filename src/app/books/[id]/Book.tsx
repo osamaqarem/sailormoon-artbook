@@ -3,26 +3,31 @@
 import Vibrant from "node-vibrant"
 import React, { useMemo, useRef, useState } from "react"
 import Lightbox, { ThumbnailsRef } from "yet-another-react-lightbox"
+import { Thumbnails, Zoom } from "yet-another-react-lightbox/plugins"
 import Counter from "yet-another-react-lightbox/plugins/counter"
 import "yet-another-react-lightbox/plugins/counter.css"
-import "yet-another-react-lightbox/styles.css"
 import "yet-another-react-lightbox/plugins/thumbnails.css"
-import { Thumbnails } from "yet-another-react-lightbox/plugins"
+import "yet-another-react-lightbox/styles.css"
 
-export const Book = ({ fileNames }: { fileNames: Array<string> }) => {
+export const Book = ({ fileSources }: { fileSources: Array<string> }) => {
   const [activeIndex, setActiveIndex] = useState(0)
 
   const slides = useMemo(
-    () => fileNames.map((name) => ({ src: "/sailor-moon/" + name })),
-    [fileNames]
+    () => fileSources.map((name) => ({ src: name })),
+    [fileSources]
   )
   const colors = useImageColors(slides[activeIndex].src)
 
   const thumbnailsRef = useRef<ThumbnailsRef>(null)
 
+  if (typeof window === "undefined") return null
+
   return (
     <Lightbox
       on={{
+        entering: () => {
+          thumbnailsRef.current?.hide?.()
+        },
         view: ({ index }) => {
           setActiveIndex(index)
         },
@@ -32,6 +37,7 @@ export const Book = ({ fileNames }: { fileNames: Array<string> }) => {
             : thumbnailsRef.current?.show)?.()
         },
       }}
+      portal={{ root: document?.getElementsByTagName("main")[0] }}
       slides={slides}
       carousel={{
         imageFit: "contain",
@@ -46,8 +52,10 @@ export const Book = ({ fileNames }: { fileNames: Array<string> }) => {
       styles={{
         slide: { padding: 0 },
         container: {
-          background: `radial-gradient(${colors?.LightVibrant}, ${colors?.Vibrant})`,
+          background: colors?.LightMuted,
+          transition: "background-color 1s",
         },
+
         thumbnailsContainer: {
           position: "absolute",
           bottom: 0,
@@ -64,12 +72,19 @@ export const Book = ({ fileNames }: { fileNames: Array<string> }) => {
       }}
       open={true}
       toolbar={{ buttons: [] }}
-      plugins={[Counter, Thumbnails]}
-      thumbnails={{ ref: thumbnailsRef }}
-      counter={{ container: { style: { top: "unset", bottom: 0 } } }}
+      plugins={[Counter, Thumbnails, Zoom]}
+      thumbnails={{ ref: thumbnailsRef, vignette: false }}
+      counter={{
+        container: { style: { top: "unset", bottom: 0, zIndex: 1 } },
+      }}
+      zoom={{
+        maxZoomPixelRatio: 5,
+        doubleClickDelay: 0,
+      }}
       render={{
         buttonPrev: () => null,
         buttonNext: () => null,
+        buttonZoom: () => null,
       }}
     />
   )

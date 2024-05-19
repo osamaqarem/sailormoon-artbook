@@ -18,17 +18,6 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-.yarl__thumbnails_bottom .yarl__thumbnails_vignette,
-.yarl__thumbnails_top .yarl__thumbnails_vignette {
-  background: none !important;
 }
 
 @layer utilities {
